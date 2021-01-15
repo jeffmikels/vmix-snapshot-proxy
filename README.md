@@ -51,6 +51,6 @@ Snapshots take about 1 second to process
 
 Open a browser and visit:
 
-`http://[PROXY_IP_ADDRESS]:[PROXY_PORT]/[INPUT_NUMBER].jpg`
+`http://[PROXY_IP_ADDRESS]:8098/[INPUT_NUMBER].jpg`
 
 Every time you visit that address, you will receive a new snapshot image of the selected input.

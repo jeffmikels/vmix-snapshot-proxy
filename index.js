@@ -3,7 +3,6 @@
 
 const vMixStorage = 'C:/Users/AV/Documents/vMixStorage/'  // should agree with settings in vMix
 const vmixUrl = 'http://localhost:8088/api';              // only change this if proxy is on a different computer
-const proxyRunsOnPort = 8098                              // which port does the proxy listen on
 
 // DO NOT EDIT BELOW THIS LINE ========================
 
@@ -27,6 +26,11 @@ for (let key of Object.keys(ifaces)) {
 }
 
 let inputs = [];
+
+// If you intend to use this with the Unofficial vMix Remote App:
+// https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote
+// the port must be set to 8098
+const proxyRunsOnPort = 8098                              // which port does the proxy listen on
 
 
 // FUNCTIONS
