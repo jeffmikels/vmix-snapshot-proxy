@@ -18,10 +18,11 @@ const print = console.log;
 // GLOBALS
 let myip = 'THIS_COMPUTER_IP';
 for (let key of Object.keys(ifaces)) {
-	let device = ifaces[key][0]
-	if (device.family == 'IPv4' && !device.internal) {
-		myip = device.address;
-		break;
+	for (let device of ifaces[key]) {
+		if (device.family == 'IPv4' && !device.internal) {
+			myip = device.address;
+			break 2;
+		}
 	}
 }
 
