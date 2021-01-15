@@ -21,7 +21,7 @@ for (let key of Object.keys(ifaces)) {
 	for (let device of ifaces[key]) {
 		if (device.family == 'IPv4' && !device.internal) {
 			myip = device.address;
-			break 2;
+			break(2);
 		}
 	}
 }
