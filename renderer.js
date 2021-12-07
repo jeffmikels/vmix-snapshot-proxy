@@ -9,6 +9,7 @@ let app = new Vue( {
     status: 'connecting',
     show_instructions: true,
     output: '',
+    msg: '',
     inputs: [],
   },
   methods: {
@@ -18,7 +19,7 @@ let app = new Vue( {
       switch ( message ) {
         case 'subscribed':
           this.storage_dir = data.vMixStorage
-          this.output = data.status
+          this.msg = data.status
           ws.sender( 'inputs' )
           this.status = 'connected'
           this.loading = true
@@ -33,11 +34,13 @@ let app = new Vue( {
           for ( let i = 0; i < this.inputs.length; i++ ) {
             if ( this.inputs[ i ].number == input.number ) {
               this.inputs[ i ] = input;
+              this.output = `Input #${input.number} updated.`
               break;
             }
           }
         case 'output':
-          this.output += JSON.stringify( data ) + '\n'
+          // this.output += JSON.stringify( data ) + '\n'
+          break;
       }
     },
     updateStorageDir() {
