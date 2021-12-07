@@ -7,10 +7,13 @@ let app = new Vue( {
     storage_dir: '',
     loading: false,
     status: 'connecting',
-    show_instructions: true,
     output: '',
     msg: '',
     inputs: [],
+    show_instructions: true,
+    show_status: true,
+    show_debug: true,
+    show_inputs: true,
   },
   methods: {
     handleMsg( msg ) {
