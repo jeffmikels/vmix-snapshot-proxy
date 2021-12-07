@@ -9,14 +9,15 @@ body {
 
 #inputs {
 	text-align: center;
+	width: 100%;
 }
 
 .input {
 	display: inline-block;
 	box-sizing: border-box;
 	vertical-align: top;
-	width: 24vw;
-	padding: 2.5vw;
+	width: 24%;
+	padding: 0.5%;
 }
 
 .input .preview {

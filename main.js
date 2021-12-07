@@ -189,7 +189,7 @@ function main() {
   // we have to do it this way, because the vMixStorage Directory
   // might change at runtime, and this allows it to.
   server.use( ( req, res, next ) => {
-    print( 'Serving static files from: ' + vMixStorage );
+    // print( 'Serving static files from: ' + vMixStorage );
     let handler = express.static( vMixStorage );
     handler( req, res, next );
   } );
