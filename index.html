@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <title>vMix Snapshot Proxy</title>
-  </head>
-  <body>
-    <div id="app">
-      <h1>vMix Snapshot Proxy</h1>
-      <p v-if="loading">loading inputs...</p>
-      <div id="inputs">
-        <div v-for="input in inputs" class="input">
-          <img class="preview" v-if="input.url" v-bind:src="input.url" alt="" />
-          <div class="preview" v-if="!input.url">&nbsp;</div>
-          <div class="caption">
-            {{input.number}}. {{input.text}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="./lib/vue.js"></script>
-    <script src="./renderer.js"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+		<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+		<!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+		<!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
+		<link rel="stylesheet" type="text/css" href="./style.css" />
+		<title>vMix Snapshot Proxy</title>
+	</head>
+	<body>
+		<div id="app">
+			<div id="status" :class="status">{{status}}</div>
+			<h1>vMix Snapshot Proxy</h1>
+			<div id="instructions" v-if="show_instructions">
+				<p>Instructions: <button @click="show_instructions = false">HIDE</button></p>
+				<ul>
+					<li>This app should be running on the same computer that's running vMix.</li>
+					<li>vMix Settings must enable remote access over port 8088.</li>
+					<li>You must configure the vMix Storage directory and select it here.</li>
+				</ul>
+			</div>
+			<div>
+				<label for="storage_dir">vMix Storage Directory: </label>
+				<input name="storage_dir" id="storage_dir" v-model="storage_dir" @change="updateStorageDir" style="width: 100%" />
+			</div>
+			<div>
+				<p>Debug Output:</p>
+				<textarea style="width: 100%; height: 90px" v-model="output"></textarea>
+			</div>
+			<p v-if="loading">loading inputs...</p>
+			<div id="inputs">
+				<div v-for="input in inputs" class="input">
+					<img class="preview" v-if="input.url" v-bind:src="input.url" alt="" />
+					<div class="preview" v-if="!input.url">&nbsp;</div>
+					<div class="caption">{{input.number}}. {{input.text}}</div>
+				</div>
+			</div>
+		</div>
+		<script src="./lib/vue.js"></script>
+		<script src="./renderer.js"></script>
+	</body>
 </html>

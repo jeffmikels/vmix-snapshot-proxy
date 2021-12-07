@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.17.6",
-    "got": "^11.8.1",
     "nocache": "^2.1.0",
     "telnet-client": "^1.4.6",
     "ws": "^8.3.0"
