@@ -14,14 +14,22 @@ const { app, BrowserWindow, ipcMain, nativeTheme } = require( 'electron' )
 
 
 // REQUIRED MODULES
-const { WebSocketServer } = require( 'ws' );
+const { WebSocketServer, WebSocket } = require( 'ws' );
+const wss = new WebSocketServer( { noServer: true } );
+wss.broadcast = function ( message, data ) {
+  wss.clients.forEach( function each( client ) {
+    if ( client.readyState === WebSocket.OPEN ) {
+      client.send( JSON.stringify( { message, data } ) );
+    }
+  } );
+}
+
 const ifaces = require( 'os' ).networkInterfaces()
 const parser = require( 'fast-xml-parser' );
 const path = require( 'path' );
 const express = require( 'express' );
 const nocache = require( 'nocache' );
 const axios = require( 'axios' );
-const ws = require( 'ws' );
 const print = console.log;
 
 // GLOBALS
@@ -42,7 +50,7 @@ myUrl = `http://${myip}:${proxyRunsOnPort}`
 
 // keep track of the vmix inputs
 let inputs = [];
-
+let nextInput = 0;
 
 // FUNCTIONS
 function sleep( ms ) {
@@ -63,6 +71,10 @@ Getting an input snapshot sends only the most recent snapshot.
 Snapshots take about 1 second to process.
 =====================================`
   return s;
+}
+
+function inputUrl( inputNumber ) {
+  return `${myUrl}/${inputNumber}.jpg?t=` + Date.now();
 }
 
 async function get_inputs() {
@@ -86,9 +98,11 @@ async function get_inputs() {
       // correct text items from xml
       if ( '#text' in input ) input.text = input[ '#text' ];
       input.number = count;
+      input.url = inputUrl( count );
       inputs.push( input );
     }
   }
+  wss.broadcast( 'inputs', inputs );
 }
 
 // vmix inputs are 1-indexed
@@ -101,34 +115,42 @@ async function request_snapshots( inputNumber = -1 ) {
     let url;
     if ( inputNumber == 0 ) { url = vMixUrl + `?Function=Snapshot&Value=0.jpg` }
     else {
-      let input = inputs[ inputNumber - 1 ];
+      inputs[ inputNumber - 1 ].url = inputUrl( inputNumber );
       url = vMixUrl + `?Function=SnapshotInput&Input=${inputNumber}&Value=${inputNumber}.jpg`
-      input.url = `${myUrl}/${inputNumber}.jpg`;
+      // send the api command
+      axios.get( url ).catch( e => console.log( e.status + ': ' + url ) );
 
       // set a timeout to see if this snapshot exists
       // if it does, update the inputs, and send a websocket message about this input
       // use axios.head
       setTimeout( async () => {
         try {
+          let input = inputs[ inputNumber - 1 ];
           let r = await axios.head( input.url );
+          wss.broadcast( 'input_update', input );
           console.dir( r );
         } catch ( e ) {
-          console.log( e );
+          // console.log( e );
         }
       }, 1000 )
     }
-
-    // send the api command
-    axios.get( url ).then( response => console.log( response ) ).catch( e => console.log( e ) );
   }
 }
 
+async function loop() {
+  if ( inputs.length == 0 ) {
+    await get_inputs();
+  } else {
+    nextInput = ( nextInput + 1 ) % inputs.length;
+    print( `LOOP: Next Input to Regenerate: ${nextInput}` );
+    if ( nextInput == 0 ) await get_inputs();
+    else await request_snapshots( nextInput );
+  }
+  setTimeout( loop, 1000 );
+}
 
 function main() {
   let clients = []
-
-  // connect to vmix
-  get_inputs();
 
   // express setup
   const server = express();
@@ -167,7 +189,7 @@ function main() {
   // we have to do it this way, because the vMixStorage Directory
   // might change at runtime, and this allows it to.
   server.use( ( req, res, next ) => {
-    print( 'Serving static files from:' + vMixStorage );
+    print( 'Serving static files from: ' + vMixStorage );
     let handler = express.static( vMixStorage );
     handler( req, res, next );
   } );
@@ -188,14 +210,6 @@ function main() {
   // 	next( req, res );
   // }, express.static( vMixStorage ) );
 
-  const wss = new WebSocketServer( { noServer: true } );
-  wss.broadcast = function ( message, data ) {
-    wss.clients.forEach( function each( client ) {
-      if ( client.readyState === WebSocket.OPEN ) {
-        client.send( JSON.stringify( { message, data } ) );
-      }
-    } );
-  }
   wss.on( 'connection', ( ws ) => {
     ws.sender = ( message, data ) => ws.send( JSON.stringify( { message, data } ) );
     ws.on( 'message', ( event ) => {
@@ -228,6 +242,7 @@ function main() {
 
   print( status() )
   setInterval( () => print( status() ), 1000 * 60 * 5 );
+  loop();
 
   // Launch Electron
   const createWindow = () => {

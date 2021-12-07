@@ -28,6 +28,14 @@ let app = new Vue( {
           this.inputs = data;
           this.loading = false
           break;
+        case 'input_update':
+          let input = data;
+          for ( let i = 0; i < this.inputs.length; i++ ) {
+            if ( this.inputs[ i ].number == input.number ) {
+              this.inputs[ i ] = input;
+              break;
+            }
+          }
         case 'output':
           this.output += data
       }
