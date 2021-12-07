@@ -2,9 +2,10 @@
   "name": "vmix-snapshot-proxy",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +14,10 @@
     "fast-xml-parser": "^3.17.6",
     "got": "^11.8.1",
     "nocache": "^2.1.0",
-    "telnet-client": "^1.4.6"
+    "telnet-client": "^1.4.6",
+    "ws": "^8.3.0"
+  },
+  "devDependencies": {
+    "electron": "^16.0.4"
   }
 }
