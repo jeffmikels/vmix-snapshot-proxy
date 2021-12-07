@@ -128,7 +128,7 @@ async function request_snapshots( inputNumber = -1 ) {
           let input = inputs[ inputNumber - 1 ];
           let r = await axios.head( input.url );
           wss.broadcast( 'input_update', input );
-          console.dir( r );
+          // console.dir( r );
         } catch ( e ) {
           // console.log( e );
         }
