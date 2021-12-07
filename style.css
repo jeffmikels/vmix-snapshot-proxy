@@ -26,6 +26,10 @@ body {
 	width: 100%;
 }
 
+.input .caption {
+	font-size: 10px;
+}
+
 #status {
 	position: absolute;
 	top: 10px;
