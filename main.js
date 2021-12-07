@@ -254,6 +254,7 @@ function main() {
       }
     } )
 
+    nativeTheme.themeSource = 'dark'
     win.loadFile( 'index.html' )
 
     ipcMain.handle( 'dark-mode:toggle', () => {
@@ -277,7 +278,8 @@ function main() {
 
   // quit when all the windows are closed
   app.on( 'window-all-closed', () => {
-    if ( process.platform === 'darwin' ) app.quit()
+    // if ( process.platform === 'darwin' ) app.quit()
+    app.quit()
   } )
 
   // reopen a window if the process activates when no windows are open
