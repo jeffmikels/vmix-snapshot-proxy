@@ -37,7 +37,7 @@ let app = new Vue( {
             }
           }
         case 'output':
-          this.output += data
+          this.output += JSON.stringify( data ) + '\n'
       }
     },
     updateStorageDir() {
