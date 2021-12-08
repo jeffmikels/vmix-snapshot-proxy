@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# this process assembles the electron app manually
+# assuming the binary has already been downloaded into the release directory
+
 TARGET=release/vmix-snapshot-proxy/resources/app
 if [[ ! -d $TARGET ]]; then mkdir "$TARGET"; fi
 rm -rf $TARGET/*
