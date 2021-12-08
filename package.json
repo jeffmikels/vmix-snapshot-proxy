@@ -1,11 +1,15 @@
 {
   "name": "vmix-snapshot-proxy",
+  "productName": "vMix Snapshot Proxy",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "bundle": "rm -rf dist && rollup -c",
+    "build-win": "electron-packager . --platform=win32 --arch=x64",
+    "build-mac": "electron-packager . --platform=darwin --arch=x64"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +23,6 @@
   },
   "devDependencies": {
     "electron": "^16.0.4",
-    "electron-packager": "^15.4.0"
+    "rollup": "^2.60.2"
   }
 }
