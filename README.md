@@ -1,6 +1,5 @@
 # vMix Snapshot Proxy
 
-
 vMix has a robust API, but one key limitation of the API is that while you can
 tell vMix to take a snapshot of an input, it will save the image on the vMix
 machine but not send the image over the network.
@@ -10,11 +9,10 @@ for those images.
 
 The application is especially helpful in providing preview images of each input for
 
-[Unofficial vMix Remote Control](https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote)
+[Unofficial vMix Remote Control for Android](https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote)
+[Unofficial vMix Remote Control for iOS](https://apps.apple.com/us/app/unofficial-vmix-remote-control/id1551404035)
 
-
-
-## Installation
+## Installation for Advanced Users
 
 These commands should be run on the same computer that is running vMix.
 
