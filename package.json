@@ -1,18 +1,28 @@
 {
   "name": "vmix-snapshot-proxy",
+  "productName": "vMix Snapshot Proxy",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "bundle": "rm -rf dist && rollup -c",
+    "build-win": "electron-packager . --platform=win32 --arch=x64",
+    "build-mac": "electron-packager . --platform=darwin --arch=x64"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.17.6",
-    "got": "^11.8.1",
     "nocache": "^2.1.0",
-    "telnet-client": "^1.4.6"
+    "telnet-client": "^1.4.6",
+    "ws": "^8.3.0"
+  },
+  "devDependencies": {
+    "electron": "^16.0.4",
+    "rollup": "^2.60.2"
   }
 }
