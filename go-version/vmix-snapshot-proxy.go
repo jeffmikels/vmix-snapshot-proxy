@@ -23,6 +23,7 @@ var vmixIP string = "localhost"
 var vmixPort int = 8088
 var vmixUrl string
 var vmixPath string = fmt.Sprintf("%s\\Documents\\vMixStorage", os.Getenv("USERPROFILE"))
+var snapshotInterval = 2000 * time.Millisecond
 
 /* Example vMix Input XML
 <inputs>
@@ -128,7 +129,7 @@ func main() {
 	app.Static("/", vmixPath)
 
 	// start the interval to refresh snapshots
-	ticker := time.NewTicker(500 * time.Millisecond)
+	ticker := time.NewTicker(snapshotInterval)
 	defer ticker.Stop()
 	lastInput := 0
 	tickerCounter := 0
@@ -136,8 +137,10 @@ func main() {
 		for range ticker.C {
 			// ask for a snapshot
 			if len(vmix.Inputs.Inputs) > 0 {
-				lastInput = (lastInput + 1) % len(vmix.Inputs.Inputs)
+				// inputs are indexed by 1 in vmix
+				lastInput = lastInput%len(vmix.Inputs.Inputs) + 1
 				RequestSnapshots(lastInput)
+				RequestSnapshots(0)
 			}
 
 			// maybe ask for all inputs again
