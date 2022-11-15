@@ -161,9 +161,10 @@ func main() {
 		accum := []byte{}
 		for {
 			if conn == nil {
-				conn, telnetError = net.Dial("tcp", "localhost:8099")
-				if telnetError == nil {
-					fmt.Println("No connection to vMix Telent API: (localhost:8099)")
+				address := "localhost:8099"
+				conn, telnetError = net.Dial("tcp", address)
+				if telnetError != nil {
+					fmt.Printf("No connection to vMix Telent API: (%s)\r\n", address)
 					continue
 				}
 				conn.Write([]byte("SUBSCRIBE TALLY\r\n"))
