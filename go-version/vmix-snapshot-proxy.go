@@ -52,7 +52,7 @@ type Inputs struct {
 	Inputs  []Input  `xml:"input"`
 }
 
-//Input{name: "Camera 1", number: 1}
+// Input{name: "Camera 1", number: 1}
 type Input struct {
 	XMLName xml.Name `xml:"input"`
 	Name    string   `xml:"title,attr"`
@@ -195,6 +195,8 @@ func main() {
 			time.Sleep(time.Second)
 		}
 	}()
+
+	PrintStatus()
 
 	// start the server
 	app.Listen(fmt.Sprintf("%s:%d", myIp, proxyPort))

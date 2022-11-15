@@ -4,51 +4,31 @@ vMix has a robust API, but one key limitation of the API is that while you can
 tell vMix to take a snapshot of an input, it will save the image on the vMix
 machine but not send the image over the network.
 
-This is a small application running on the nodejs framework to act as a proxy
-for those images.
+The Snapshot Proxy is a small application written in the Go language to automatically generate
+those images and provide them over the network to other applications.
 
 The application is especially helpful in providing preview images of each input for
 
 [Unofficial vMix Remote Control for Android](https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote)
 [Unofficial vMix Remote Control for iOS](https://apps.apple.com/us/app/unofficial-vmix-remote-control/id1551404035)
 
-## Installation for Advanced Users
+## Installation:
 
-These commands should be run on the same computer that is running vMix.
+-   Download the latest zip file from the [Releases Page](https://github.com/jeffmikels/vmix-snapshot-proxy/releases)
+-   Unzip the file.
+-   Put the `.exe` and the `.bat` files both in the same directory wherever you want (NOTE: they must be on the SAME computer that's running vMix).
+-   Start vMix.
+-   Double-click on the `.bat` file.
+-   If you have problems, look at the `.bat` file for the available command line options:
+    -   `-h` will print the help
+    -   `-p` will allow you to specify the Web API port vMix is using
+    -   `-d` will allow you to specify the directory where vMix stores snapshot images
 
-```bash
-$ git clone https://github.com/jeffmikels/vmix-snapshot-proxy.git
-$ cd vmix-snapshot-proxy
-$ npm install
-```
+## Advanced Usage:
 
-## Usage
+When running, the proxy will open a web server at port `8098` and will expose the following HTTP endpoints:
 
-Edit the settings at the top of `index.js`.
-
-Start vMix and then the proxy server...
-
-```
-$ node index.js
-```
-
-You'll see something like the following output
-
-```
-=====================================
-Running vMix Snapshot Proxy at port 8098
-Get a list of all inputs:                http://192.168.1.1:8098/
-Force regen one input (0 means program): http://192.168.1.1:8098/regen/#
-Force regen all inputs:                  http://192.168.1.1:8098/regen
-Get input snapshot:                      http://192.168.1.1:8098/#.jpg
-
-Getting an input snapshot sends the most recent snapshot, and queues the generation of a new one.
-Snapshots take about 1 second to process
-=====================================
-```
-
-Open a browser and visit:
-
-`http://[PROXY_IP_ADDRESS]:8098/[INPUT_NUMBER].jpg`
-
-Every time you visit that address, you will receive a new snapshot image of the selected input.
+-   `http://[IP_ADDRESS]:8098/` will return a list of all the discovered vMix inputs
+-   `http://[IP_ADDRESS]:8098/regen` will trigger a global regeneration of all input snapshots
+-   `http://[IP_ADDRESS]:8098/regen/[INPUT_NUMBER]` will trigger a regeneration of one input's snapshot
+-   `http://[IP_ADDRESS]:8098/[INPUT_NUMBER].jpg` will serve the input snapshot as a jpg image.
