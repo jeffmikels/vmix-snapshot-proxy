@@ -9,8 +9,10 @@ those images and provide them over the network to other applications.
 
 The application is especially helpful in providing preview images of each input for
 
-[Unofficial vMix Remote Control for Android](https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote)
-[Unofficial vMix Remote Control for iOS](https://apps.apple.com/us/app/unofficial-vmix-remote-control/id1551404035)
+- [Unofficial vMix Remote Control for Android](https://play.google.com/store/apps/details?id=org.jeffmikels.vmix_remote)
+- [Unofficial vMix Remote Control for iOS](https://apps.apple.com/us/app/unofficial-vmix-remote-control/id1551404035)
+
+Instructional Video here: https://youtu.be/7tXUx9Q_O58
 
 ## Installation:
 
