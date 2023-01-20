@@ -165,6 +165,7 @@ func main() {
 				conn, telnetError = net.Dial("tcp", address)
 				if telnetError != nil {
 					fmt.Printf("No connection to vMix Telent API: (%s)\r\n", address)
+					time.Sleep(time.Second * 2)
 					continue
 				}
 				conn.Write([]byte("SUBSCRIBE TALLY\r\n"))
@@ -200,7 +201,7 @@ func main() {
 	PrintStatus()
 
 	// start the server
-	app.Listen(fmt.Sprintf("%s:%d", myIp, proxyPort))
+	app.Listen(fmt.Sprintf("%s:%d", "0.0.0.0", proxyPort))
 
 	if conn != nil {
 		conn.Close()
@@ -215,6 +216,9 @@ func PrintStatus() {
 	fmt.Printf("| vMix Web API URL:                         %s\n", vmixUrl)
 	fmt.Println("|- AVAILABLE COMMANDS -----------------------------------------------------------------")
 	fmt.Printf("| Running vMix Snapshot Proxy at port %d\n", proxyPort)
+	fmt.Println("| NOTE: If this computer has multiple IP addresses, one of them will be displayed below")
+	fmt.Println("| but this program will listen for connections on all available interfaces")
+	fmt.Println("|")
 	fmt.Printf("| Get a list of all inputs:                 http://%s:%d/\n", myIp, proxyPort)
 	fmt.Printf("| Force regen one input (0 means program):  http://%s:%d/regen/#\n", myIp, proxyPort)
 	fmt.Printf("| Force regen all inputs:                   http://%s:%d/regen\n", myIp, proxyPort)
@@ -246,7 +250,7 @@ func GetInputs() {
 	fmt.Println(url)
 	bodyBytes := DoRequest(url)
 	if bodyBytes == nil {
-		fmt.Println("ERROR: vMix failed to retriev inputs... Is vMix running?")
+		fmt.Println("\nERROR: vMix failed to retrieve inputs... Is vMix running?")
 		return
 	}
 	fmt.Println(string(bodyBytes))
